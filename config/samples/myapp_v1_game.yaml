@@ -1,0 +1,8 @@
+apiVersion: myapp.qingwave.github.io/v1
+kind: Game
+metadata:
+  name: game-sample
+spec:
+  replicas: 1
+  image: alexwhen/docker-2048
+  host: mygame.io

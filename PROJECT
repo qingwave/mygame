@@ -1,0 +1,20 @@
+domain: qingwave.github.io
+layout:
+- go.kubebuilder.io/v3
+projectName: mygame
+repo: qingwave.github.io/mygame
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: qingwave.github.io
+  group: myapp
+  kind: Game
+  path: qingwave.github.io/mygame/api/v1
+  version: v1
+  webhooks:
+    defaulting: true
+    validation: true
+    webhookVersion: v1
+version: "3"

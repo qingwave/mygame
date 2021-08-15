@@ -1,0 +1,24 @@
+# permissions for end users to edit games.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: game-editor-role
+rules:
+- apiGroups:
+  - myapp.qingwave.github.io
+  resources:
+  - games
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - myapp.qingwave.github.io
+  resources:
+  - games/status
+  verbs:
+  - get
