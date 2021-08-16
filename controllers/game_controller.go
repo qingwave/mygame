@@ -33,9 +33,7 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
-	"sigs.k8s.io/controller-runtime/pkg/handler"
 	"sigs.k8s.io/controller-runtime/pkg/log"
-	"sigs.k8s.io/controller-runtime/pkg/source"
 
 	myappv1 "qingwave.github.io/mygame/api/v1"
 )
@@ -211,24 +209,13 @@ func (r *GameReconciler) syncGame(ctx context.Context, obj *myappv1.Game) error 
 
 // SetupWithManager sets up the controller with the Manager.
 func (r *GameReconciler) SetupWithManager(mgr ctrl.Manager) error {
-	c, err := controller.New("game-controller", mgr, controller.Options{
-		Reconciler:              r,
-		MaxConcurrentReconciles: 3,
-	})
-	if err != nil {
-		return err
-	}
-
-	if err := c.Watch(&source.Kind{Type: &myappv1.Game{}}, &handler.EnqueueRequestForObject{}); err != nil {
-		return err
-	}
-
-	if err := c.Watch(&source.Kind{Type: &appsv1.Deployment{}}, &handler.EnqueueRequestForOwner{
-		OwnerType:    &myappv1.Game{},
-		IsController: true,
-	}); err != nil {
-		return err
-	}
+	ctrl.NewControllerManagedBy(mgr).
+		WithOptions(controller.Options{
+			MaxConcurrentReconciles: 3,
+		}).
+		For(&myappv1.Game{}).
+		Owns(&appsv1.Deployment{}).
+		Complete(r)
 
 	return nil
 }
