@@ -61,7 +61,7 @@ func main() {
 	opts := zap.Options{
 		Development: true,
 	}
-	flag.BoolVar(&enableWebhook, "enable-webhook", true, "Enable webhook")
+	flag.BoolVar(&enableWebhook, "enable-webhook", false, "Enable webhook")
 	opts.BindFlags(flag.CommandLine)
 	flag.Set("zap-stacktrace-level", "panic")
 	flag.Parse()
